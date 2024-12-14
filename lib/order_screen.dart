@@ -26,7 +26,8 @@ class _CashierScreenState extends State<CashierScreen> {
         ),
         title: Text(
           'Cashier',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style:
+              TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[800]),
         ),
         centerTitle: true,
         bottom: PreferredSize(
@@ -145,14 +146,14 @@ class _OrderScreenBodyState extends State<OrderScreenBody> {
         return Container(
           decoration: BoxDecoration(
             color: const Color.fromRGBO(255, 255, 255, 1),
-            // boxShadow: [
-            //   BoxShadow(
-            //     color: Colors.black.withOpacity(0.2),
-            //     spreadRadius: 1,
-            //     blurRadius: 5,
-            //     offset: Offset(0, 3),
-            //   ),
-            // ],
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                spreadRadius: 1,
+                blurRadius: 5,
+                offset: Offset(0, 3),
+              ),
+            ],
             border: Border.all(color: Colors.grey, width: .1),
             // borderRadius: BorderRadius.all(Radius.circular(8)),
           ),
@@ -173,22 +174,28 @@ class _OrderScreenBodyState extends State<OrderScreenBody> {
                       'Item Chicken burger (Extra Large) $index',
                       softWrap: true,
                       overflow: TextOverflow.clip,
+                      style: TextStyle(
+                        fontSize: 12,
+                      ),
                     ),
                   ),
                 ),
                 Row(
                   children: [
                     Container(
-                      width: 32,
-                      height: 32,
+                      width: 28,
+                      height: 28,
                       decoration: BoxDecoration(
-                        color: Colors.lightBlue[200],
+                        color: Color.fromARGB(255, 255, 199, 32),
                         // shape: BoxShape.circle,
                         borderRadius: BorderRadius.all(Radius.circular(9)),
                       ),
                       child: IconButton(
                         padding: EdgeInsets.all(0),
-                        icon: Icon(Icons.remove),
+                        icon: Icon(
+                          Icons.remove,
+                          size: 14,
+                        ),
                         onPressed: () {
                           setState(() {
                             if (_itemCounts[index] > 0) {
@@ -201,21 +208,27 @@ class _OrderScreenBodyState extends State<OrderScreenBody> {
                     SizedBox(
                       width: 10,
                     ),
-                    Text(_itemCounts[index].toString()),
+                    Text(
+                      _itemCounts[index].toString(),
+                      style: TextStyle(fontSize: 12),
+                    ),
                     SizedBox(
                       width: 10,
                     ),
                     Container(
-                      width: 32,
-                      height: 32,
+                      width: 28,
+                      height: 28,
                       decoration: BoxDecoration(
-                        color: Colors.lightBlue[200],
+                        color: Color.fromARGB(255, 255, 199, 32),
                         // shape: BoxShape.circle,
                         borderRadius: BorderRadius.all(Radius.circular(9)),
                       ),
                       child: IconButton(
                         padding: EdgeInsets.all(0),
-                        icon: Icon(Icons.add),
+                        icon: Icon(
+                          Icons.add,
+                          size: 14,
+                        ),
                         onPressed: () {
                           setState(() {
                             _itemCounts[index]++;
@@ -245,38 +258,56 @@ class _CheckOrdersState extends State<CheckOrders> {
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
+      color: Colors.black87,
+      padding: EdgeInsets.all(0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('1 Item added',
+            child: Container(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('1 Item added',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                      )),
+                  Text(
+                    'Total: 100Php',
                     style: TextStyle(
-                      fontSize: 16,
-                    )),
-                Text(
-                  'Total: 100Php',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-                ),
-              ],
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Colors.white),
+                  ),
+                ],
+              ),
             ),
           ),
-          Expanded(
+          Container(
+            color: const Color.fromARGB(255, 255, 191, 0),
+            padding: EdgeInsets.all(10),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Row(
                 children: [
                   Text(
                     'Check orders',
-                    style: TextStyle(fontSize: 16,),
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey[800],
+                    ),
                   ),
                   SizedBox(
                     width: 16,
                   ),
-                  Icon(Icons.arrow_circle_right_outlined),
+                  Icon(
+                    Icons.arrow_circle_right_outlined,
+                    size: 32,
+                    color: Colors.grey[700],
+                  ),
                 ],
               ),
             ),
@@ -286,5 +317,3 @@ class _CheckOrdersState extends State<CheckOrders> {
     );
   }
 }
-
-
