@@ -4,6 +4,8 @@ import 'package:sales_track/side_bar.dart';
 class CashierScreen extends StatefulWidget {
   const CashierScreen({super.key});
 
+  ///yawa
+
   @override
   State<CashierScreen> createState() => _CashierScreenState();
 }
@@ -11,7 +13,6 @@ class CashierScreen extends StatefulWidget {
 class _CashierScreenState extends State<CashierScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   String _selectedValue = 'Category';
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -138,6 +139,7 @@ class OrderScreenBody extends StatefulWidget {
 class _OrderScreenBodyState extends State<OrderScreenBody> {
   final List<int> _itemCounts = List<int>.generate(12, (index) => 0);
 
+  //recycle view list___________________________________________________________
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -157,7 +159,7 @@ class _OrderScreenBodyState extends State<OrderScreenBody> {
             border: Border.all(color: Colors.grey, width: .1),
             // borderRadius: BorderRadius.all(Radius.circular(8)),
           ),
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(4),
           margin: const EdgeInsets.all(0),
           child: ListTile(
             leading: Image.asset('assets/item.png'),
@@ -255,6 +257,82 @@ class CheckOrders extends StatefulWidget {
 }
 
 class _CheckOrdersState extends State<CheckOrders> {
+  //sa pagcheck ng orders duh dialog____________________________________________
+  void _ordersListDialog(BuildContext context) {
+    List<String> items = [
+      'Item Name',
+      'QTY',
+      'Price',
+    ];
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: Align(
+            alignment: Alignment.center,
+            child: Text('Check Order'),
+          ),
+          content: ListView.builder(
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                leading: Icon(Icons.place),
+                title: Text(items[index]),
+              );
+            },
+          ),
+          actions: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.blue,
+                  ),
+                  child: TextButton(
+                    onPressed: () {},
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Pay',
+                        style: TextStyle(color: Colors.black87),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: const Color.fromARGB(255, 255, 191, 0),
+                  ),
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Add new item',
+                        style: TextStyle(color: Colors.black87),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+//bottom nav barrr______________________________________________________________
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
@@ -289,26 +367,31 @@ class _CheckOrdersState extends State<CheckOrders> {
           Container(
             color: const Color.fromARGB(255, 255, 191, 0),
             padding: EdgeInsets.all(10),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Row(
-                children: [
-                  Text(
-                    'Check orders',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey[800],
+            child: InkWell(
+              onTap: () {
+                _ordersListDialog(context);
+              },
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Row(
+                  children: [
+                    Text(
+                      'Check orders',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey[800],
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 16,
-                  ),
-                  Icon(
-                    Icons.arrow_circle_right_outlined,
-                    size: 32,
-                    color: Colors.grey[700],
-                  ),
-                ],
+                    SizedBox(
+                      width: 16,
+                    ),
+                    Icon(
+                      Icons.arrow_circle_right_outlined,
+                      size: 32,
+                      color: Colors.grey[700],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
