@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sales_track/inventory.dart';
 
 class SideBar extends StatelessWidget {
   const SideBar({super.key});
@@ -33,7 +34,24 @@ class SideBar extends StatelessWidget {
               'Analytics',
               style: TextStyle(color: Colors.grey[800]),
             ),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => Inventory()));
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.shopping_cart_outlined,
+              color: Colors.deepOrange[400],
+            ),
+            title: Text(
+              'Cashier dashboard',
+              style: TextStyle(color: Colors.grey[800]),
+            ),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => Inventory()));
+            },
           ),
           ListTile(
             leading: Icon(
@@ -44,7 +62,10 @@ class SideBar extends StatelessWidget {
               'Inventory',
               style: TextStyle(color: Colors.grey[800]),
             ),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => Inventory()));
+            },
           ),
           ListTile(
             leading: Icon(
@@ -55,7 +76,10 @@ class SideBar extends StatelessWidget {
               'Add New Item',
               style: TextStyle(color: Colors.grey[800]),
             ),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => Inventory()));
+            },
           ),
           ListTile(
             leading: Icon(
@@ -66,7 +90,10 @@ class SideBar extends StatelessWidget {
               'Order History',
               style: TextStyle(color: Colors.grey[800]),
             ),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => Inventory()));
+            },
           ),
           ListTile(
             leading: Icon(
@@ -77,7 +104,10 @@ class SideBar extends StatelessWidget {
               'About',
               style: TextStyle(color: Colors.grey[800]),
             ),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => Inventory()));
+            },
           ),
         ],
       ),
