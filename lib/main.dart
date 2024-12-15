@@ -22,7 +22,7 @@ class _AppState extends State<App> {
             backgroundColor: const Color.fromARGB(255, 255, 255, 255),
             foregroundColor: Colors.black,
             elevation: 10,
-            shadowColor: Colors.black.withOpacity(.2),
+            shadowColor: Colors.black.withOpacity(.4),
             surfaceTintColor: Colors.transparent),
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
@@ -30,6 +30,7 @@ class _AppState extends State<App> {
         ),
       ),
       debugShowCheckedModeBanner: false,
+      title: 'yawa',
       home: CashierScreen(),
     );
   }

@@ -83,7 +83,7 @@ class _CashierScreenState extends State<CashierScreen> {
                     Expanded(
                       child: TextField(
                         decoration: InputDecoration(
-                          hintText: 'Search here...',
+                          hintText: 'Search item...',
                           contentPadding: EdgeInsets.all(16),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
@@ -110,7 +110,10 @@ class _CashierScreenState extends State<CashierScreen> {
                           fillColor: Colors.white,
                           suffixIcon: IconButton(
                             onPressed: () {},
-                            icon: Icon(Icons.search),
+                            icon: Icon(
+                              Icons.search,
+                              color: Color(0xFFFF8C00),
+                            ),
                           ),
                         ),
                       ),
@@ -137,7 +140,8 @@ class OrderScreenBody extends StatefulWidget {
 }
 
 class _OrderScreenBodyState extends State<OrderScreenBody> {
-  final List<int> _itemCounts = List<int>.generate(12, (index) => 0);
+  final List<int> _itemCounts = List<int>.generate(100, (index) => 0);
+  int count = 0;
 
   //recycle view list___________________________________________________________
   @override
