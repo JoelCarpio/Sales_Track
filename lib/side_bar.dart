@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:sales_track/about.dart';
+import 'package:sales_track/add_new_item.dart';
+import 'package:sales_track/analytics.dart';
 import 'package:sales_track/inventory.dart';
+import 'package:sales_track/order_history.dart';
 
 class SideBar extends StatelessWidget {
   const SideBar({super.key});
@@ -36,7 +40,7 @@ class SideBar extends StatelessWidget {
             ),
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Inventory()));
+                  MaterialPageRoute(builder: (context) => Analytics()));
             },
           ),
           ListTile(
@@ -49,8 +53,9 @@ class SideBar extends StatelessWidget {
               style: TextStyle(color: Colors.grey[800]),
             ),
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Inventory()));
+              Navigator.pop(context);
+              // Navigator.push(context,
+              //     MaterialPageRoute(builder: (context) => Inventory()));
             },
           ),
           ListTile(
@@ -78,7 +83,7 @@ class SideBar extends StatelessWidget {
             ),
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Inventory()));
+                  MaterialPageRoute(builder: (context) => AddNewItem()));
             },
           ),
           ListTile(
@@ -92,7 +97,7 @@ class SideBar extends StatelessWidget {
             ),
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Inventory()));
+                  MaterialPageRoute(builder: (context) => OrderHistory()));
             },
           ),
           ListTile(
@@ -105,8 +110,8 @@ class SideBar extends StatelessWidget {
               style: TextStyle(color: Colors.grey[800]),
             ),
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Inventory()));
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => About()));
             },
           ),
         ],
