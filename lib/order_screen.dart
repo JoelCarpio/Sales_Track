@@ -322,7 +322,7 @@ class _CheckOrdersState extends State<CheckOrders> {
                     child: Align(
                       alignment: Alignment.center,
                       child: Text(
-                        'Add new item',
+                        'Add',
                         style: TextStyle(color: Colors.black87),
                       ),
                     ),

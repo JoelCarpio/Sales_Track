@@ -12,7 +12,7 @@ class _InventoryState extends State<Inventory> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('gaga'),
+        title: Text('Inventory'),
       ),
     );
   }

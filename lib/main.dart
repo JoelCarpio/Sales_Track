@@ -30,7 +30,7 @@ class _AppState extends State<App> {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      title: 'yawa',
+      title: 'P.O.S: SalesTrack',
       home: CashierScreen(),
     );
   }
