@@ -5,21 +5,26 @@ import 'package:sales_track/analytics.dart';
 import 'package:sales_track/inventory.dart';
 import 'package:sales_track/order_history.dart';
 
-class SideBar extends StatelessWidget {
-  const SideBar({super.key});
+class SideBar extends StatefulWidget {
+  final Function onDrawerClosed;  // Callback function to notify drawer closed
 
+  const SideBar({super.key, required this.onDrawerClosed});
+
+  @override
+  State<SideBar> createState() => _SideBarState();
+}
+
+class _SideBarState extends State<SideBar> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: Color(0xFFFFF8E1),
-
-      ///pale yellow
+      backgroundColor: Color(0xFFFFF8E1), // Pale yellow background color
       child: ListView(
         padding: EdgeInsets.all(0),
         children: [
           DrawerHeader(
             decoration: BoxDecoration(
-              color: Color(0xFFFF8C00),
+              color: Color(0xFFFF8C00),  // Orange header background
             ),
             child: Text(
               'Your Shop Name',
@@ -53,9 +58,8 @@ class SideBar extends StatelessWidget {
               style: TextStyle(color: Colors.grey[800]),
             ),
             onTap: () {
-              Navigator.pop(context);
-              // Navigator.push(context,
-              //     MaterialPageRoute(builder: (context) => Inventory()));
+              Navigator.pop(context);  // Close the drawer
+              widget.onDrawerClosed();  // Notify the parent widget that the drawer is closed
             },
           ),
           ListTile(

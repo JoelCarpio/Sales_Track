@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
+import 'package:sales_track/add_new_item.dart';
 // import 'dart:convert';
 import 'package:sales_track/side_bar.dart';
 import 'package:sales_track/db/database_helper.dart';
@@ -18,6 +19,15 @@ class CashierScreen extends StatefulWidget {
 class _CashierScreenState extends State<CashierScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   String _selectedValue = 'Category';
+  bool isDrawerOpen = false;
+
+  // Function to handle the closing of the drawer
+  void _onDrawerClosed() {
+    setState(() {
+      isDrawerOpen = false; // Set the drawer state to closed
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,6 +37,9 @@ class _CashierScreenState extends State<CashierScreen> {
         leading: IconButton(
           onPressed: () {
             _scaffoldKey.currentState?.openDrawer();
+            setState(() {
+              isDrawerOpen = true; // Track if the drawer is open
+            });
           },
           icon: Icon(Icons.menu),
         ),
@@ -130,9 +143,10 @@ class _CashierScreenState extends State<CashierScreen> {
           ),
         ),
       ),
-      drawer: SideBar(),
+      drawer: SideBar(
+        onDrawerClosed: _onDrawerClosed,
+      ),
       body: const OrderScreenBody(),
-      // bottomNavigationBar: CheckOrders(),
     );
   }
 }
@@ -200,7 +214,50 @@ class _OrderScreenBodyState extends State<OrderScreenBody> {
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Center(child: Text('No items available'));
+          return Center(
+              child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('No items available'),
+                SizedBox(
+                  height: 50,
+                ),
+                Center(
+                  child: SizedBox(
+                    height: 52,
+                    child: ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                        ),
+                        iconColor: Colors.black87,
+                        backgroundColor: Color.fromARGB(255, 255, 199, 32),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context); // Close the drawer
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AddNewItem()));
+                      },
+                      label: Text(
+                        "Add Item",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                          fontSize: 24,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ));
         } else {
           if (mutableItemList.isEmpty) {
             mutableItemList = List<Map<String, dynamic>>.from(
