@@ -1,64 +1,11 @@
 import 'package:flutter/material.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-// import 'package:sales_track/db/database_helper.dart';
+import 'package:sales_track/db/database_helper.dart';
+import 'package:get/get.dart';
+import 'package:sales_track/image_controller.dart';
 
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
-
-class DatabaseHelper {
-  static final DatabaseHelper _instance = DatabaseHelper._internal();
-  static Database? _database;
-
-  DatabaseHelper._internal();
-
-  factory DatabaseHelper() => _instance;
-
-  Future<Database> get database async {
-    if (_database != null) return _database!;
-    _database = await _initDatabase();
-    return _database!;
-  }
-
-  Future<Database> _initDatabase() async {
-    String path = join(await getDatabasesPath(), 'POS_saleTrack.db');
-    return await openDatabase(
-      path,
-      version: 1,
-      onCreate: (db, version) async {
-        await db.execute('''
-          CREATE TABLE items (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            item_name TEXT NOT NULL,
-            category_name TEXT NOT NULL,
-            price INTEGER
-          )
-        ''');
-      },
-    );
-  }
-
-// pag insert ng data
-  Future<void> insertData(
-      String itemName, String categoryName, int price) async {
-    final db = await database;
-    await db.insert(
-      'items',
-      {'item_name': itemName, 'category_name': categoryName, 'price': price},
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-  }
-
-// pagfetch ng data
-  Future<List<Map<String, dynamic>>> fetchAllData() async {
-    final db = await database;
-    return await db.query('items');
-  }
-}
-
-// taas neto yung data base!! ^^^^^
-
-// page part
 class AddNewItem extends StatefulWidget {
   const AddNewItem({super.key});
 
@@ -71,49 +18,60 @@ class _AddNewItemState extends State<AddNewItem> {
   final TextEditingController _itemCategoryController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final DatabaseHelper _dbHelper = DatabaseHelper();
+  final ImageController _imageController =
+      Get.put(ImageController()); // Use GetX controller
 
-  List<Map<String, dynamic>> _data = [];
+  List<Map<String, dynamic>> _itemsList = []; // List to hold added items
 
-  Future<void> _fetchData() async {
+  // Method to fetch items from the database
+  Future<void> _fetchItems() async {
     final data = await _dbHelper.fetchAllData();
     setState(() {
-      _data = data;
+      _itemsList = data;
     });
   }
 
+  // Method to insert data into the database
   Future<void> _insertData() async {
     final itemName = _itemNameController.text;
     final categoryName = _itemCategoryController.text;
     final price = int.tryParse(_priceController.text);
 
     if (itemName.isNotEmpty && categoryName.isNotEmpty && price != null) {
-      await _dbHelper.insertData(itemName, categoryName, price);
-      // _itemNameController.clear();
-      // _itemNameController.clear();
-      // _itemCategoryController.clear();
-      _fetchData(); // Refresh the data list
+      await _dbHelper.insertData(
+          itemName, categoryName, price, _imageController.imagePath.value);
+      _itemNameController.clear();
+      _itemCategoryController.clear();
+      _priceController.clear();
+      _imageController.clearImage();
+      await _fetchItems();
+    }
+  }
+
+  // Method to pick an image from the gallery
+  Future<void> pickImage(ImageSource source) async {
+    try {
+      final ImagePicker picker = ImagePicker();
+      final XFile? pickedFile = await picker.pickImage(source: source);
+
+      if (pickedFile != null) {
+        _imageController
+            .setImage(pickedFile.path); // Update image path in controller
+      } else {
+        print('No image selected.');
+      }
+    } catch (e) {
+      print('Error picking image: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error selecting image: $e')),
+      );
     }
   }
 
   @override
   void initState() {
     super.initState();
-    _fetchData();
-  }
-
-  File? _image;
-
-  Future<void> pickImage(ImageSource source) async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? pickedFile = await picker.pickImage(source: source);
-
-    if (pickedFile != null) {
-      setState(() {
-        _image = File(pickedFile.path);
-      });
-    } else {
-      print('No image selected.');
-    }
+    _fetchItems();
   }
 
   @override
@@ -207,9 +165,9 @@ class _AddNewItemState extends State<AddNewItem> {
                     SizedBox(
                       height: 100,
                       width: 100,
-                      child: _image != null
+                      child: Obx(() => _imageController.imagePath.value != null
                           ? Image.file(
-                              _image!,
+                              File(_imageController.imagePath.value!),
                               fit: BoxFit.cover,
                             )
                           : Container(
@@ -222,7 +180,7 @@ class _AddNewItemState extends State<AddNewItem> {
                                   textAlign: TextAlign.center,
                                 ),
                               ),
-                            ),
+                            )),
                     ),
                     SizedBox(width: 30),
                     ElevatedButton.icon(
@@ -261,7 +219,21 @@ class _AddNewItemState extends State<AddNewItem> {
                     iconColor: Colors.black87,
                     backgroundColor: Color.fromARGB(255, 255, 199, 32),
                   ),
-                  onPressed: _insertData,
+                  onPressed: () {
+                    _insertData();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          "Item added successfully!",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        duration: Duration(seconds: 2), // Snackbar duration
+                        behavior: SnackBarBehavior
+                            .floating, // Makes the Snackbar float
+                        backgroundColor: Colors.grey,
+                      ),
+                    );
+                  },
                   label: Text(
                     "Add Item",
                     style: TextStyle(
@@ -274,21 +246,6 @@ class _AddNewItemState extends State<AddNewItem> {
               ),
             ),
             SizedBox(height: 40),
-            SizedBox(
-              height: MediaQuery.of(context).size.height *
-                  0.4, // 40% of screen height
-              child: ListView.builder(
-                itemCount: _data.length,
-                itemBuilder: (context, index) {
-                  final item = _data[index];
-                  return ListTile(
-                    title: Text(item['item_name']),
-                    subtitle: Text(
-                        'Category: ${item['category_name']} - Price: ${item['price']}'),
-                  );
-                },
-              ),
-            ),
           ],
         ),
       ),
