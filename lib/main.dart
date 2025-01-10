@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:sales_track/order_screen.dart';
+// import 'package:sales_track/db/database_helper.dart';
 
-void main() {
+void main(){
+  //  WidgetsFlutterBinding.ensureInitialized();
+  // final dbHelper = DatabaseHelper();
+
+
+  // await dbHelper.deleteWholeDatabase();
   runApp(const App());
 }
 
