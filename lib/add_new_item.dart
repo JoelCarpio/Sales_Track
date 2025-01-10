@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sales_track/db/database_helper.dart';
 import 'package:get/get.dart';
 import 'package:sales_track/image_controller.dart';
+import 'package:sales_track/order_screen.dart';
 
 class AddNewItem extends StatefulWidget {
   const AddNewItem({super.key});
@@ -55,8 +56,7 @@ class _AddNewItemState extends State<AddNewItem> {
       final XFile? pickedFile = await picker.pickImage(source: source);
 
       if (pickedFile != null) {
-        _imageController
-            .setImage(pickedFile.path); // Update image path in controller
+        _imageController.setImage(pickedFile.path);
       } else {
         print('No image selected.');
       }
@@ -220,6 +220,11 @@ class _AddNewItemState extends State<AddNewItem> {
                     backgroundColor: Color.fromARGB(255, 255, 199, 32),
                   ),
                   onPressed: () {
+                    Navigator.pop(context); // Close the drawer
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CashierScreen()));
                     _insertData();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
